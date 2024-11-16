@@ -65,6 +65,10 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{`"abc ads" != "abc ads"`, false},
 		{`"abc" == "ac daw"`, false},
 		{`"abc" != "ac daw"`, true},
+		{`"abc" >= "ac daw"`, false},
+		{`"abc" <= "ac daw"`, true},
+		{`"abc" < "ac daw"`, true},
+		{`"abc" > "ac daw"`, false},
 	}
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
