@@ -30,12 +30,14 @@ const (
 	COMMA     = ","
 	SEMICOLON = ";"
 
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
-	EQ     = "=="
-	NOT_EQ = "!="
+	LPAREN   = "("
+	RPAREN   = ")"
+	LBRACKET = "["
+	RBRACKET = "]"
+	LBRACE   = "{"
+	RBRACE   = "}"
+	EQ       = "=="
+	NOT_EQ   = "!="
 
 	// Keywords
 	FUNCTION = "FUNCTION"
