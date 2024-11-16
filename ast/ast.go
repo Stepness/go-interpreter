@@ -64,6 +64,11 @@ type IntegerLiteral struct {
 	Value int64
 }
 
+type StringLiteral struct {
+	Token token.Token
+	Value string
+}
+
 type Boolean struct {
 	Token token.Token
 	Value bool
@@ -248,3 +253,7 @@ func (ce *CallExpression) String() string {
 	out.WriteString(")")
 	return out.String()
 }
+
+func (sl *StringLiteral) expressionNode()      {}
+func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
+func (sl *StringLiteral) String() string       { return sl.Token.Literal }

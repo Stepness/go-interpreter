@@ -285,7 +285,7 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 	}{
 		{
 			"-a * b",
-			"((-a)*b)",
+			"((-a) * b)",
 		},
 		{
 			"!-a",
@@ -293,55 +293,55 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 		},
 		{
 			"a + b + c",
-			"((a+b)+c)",
+			"((a + b) + c)",
 		},
 		{
 			"a + b - c",
-			"((a+b)-c)",
+			"((a + b) - c)",
 		},
 		{
 			"a * b * c",
-			"((a*b)*c)",
+			"((a * b) * c)",
 		},
 		{
 			"a * b / c",
-			"((a*b)/c)",
+			"((a * b) / c)",
 		},
 		{
 			"a + b / c",
-			"(a+(b/c))",
+			"(a + (b / c))",
 		},
 		{
 			"a + b * c + d / e - f",
-			"(((a+(b*c))+(d/e))-f)",
+			"(((a + (b * c)) + (d / e)) - f)",
 		},
 		{
 			"3 + 4; -5 * 5",
-			"(3+4)((-5)*5)",
+			"(3 + 4)((-5) * 5)",
 		},
 		{
 			"5 > 4 == 3 < 4",
-			"((5>4)==(3<4))",
+			"((5 > 4) == (3 < 4))",
 		},
 		{
 			"3 + 4 * 5 == 3 * 1 + 4 * 5",
-			"((3+(4*5))==((3*1)+(4*5)))",
+			"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 		},
 		{
 			"3 + 4 * 5 == 3 * 1 + 4 * 5",
-			"((3+(4*5))==((3*1)+(4*5)))",
+			"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 		},
 		{
 			"(5 + 5) * 2",
-			"((5+5)*2)",
+			"((5 + 5) * 2)",
 		},
 		{
 			"2 / (5 + 5)",
-			"(2/(5+5))",
+			"(2 / (5 + 5))",
 		},
 		{
 			"-(5 + 5)",
-			"(-(5+5))",
+			"(-(5 + 5))",
 		},
 	}
 	for _, tt := range tests {
@@ -568,4 +568,22 @@ func TestCallExpressionParsing(t *testing.T) {
 	testInfixExpression(t, exp.Arguments[1], 2,
 		"*", 3)
 	testInfixExpression(t, exp.Arguments[2], 4, "+", 5)
+}
+
+func TestStringLiteralExpression(t *testing.T) {
+	input := `"hello world";`
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+
+	checkParseErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	literal, ok := stmt.Expression.(*ast.StringLiteral)
+	if !ok {
+		t.Fatalf("exp not *ast.StringLiteral. got=%T", stmt.Expression)
+	}
+	if literal.Value != "hello world" {
+		t.Errorf("literal.Value not %q. got=%q", "hello world", literal.Value)
+	}
 }
